@@ -7,6 +7,8 @@ import javax.persistence.Id;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
+    public User() {}
+
     public User(String name, String email) {
         this.name = name;
         this.email = email;

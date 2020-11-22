@@ -6,15 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-
-    public User save(User user) {
-        return this.userRepository.save(user);
-    }
-
-    public Iterable<User> findAll() {
-        return this.userRepository.findAll();
-    }
+public interface UserService {
+    public User save(User user);
+    public Iterable<User> findAll();
 }

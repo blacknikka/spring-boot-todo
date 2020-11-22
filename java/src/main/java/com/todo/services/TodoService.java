@@ -6,16 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TodoService {
+public interface TodoService {
 
-    @Autowired
-    private TodoRepository todoRepository;
-
-    public Todo save(Todo todo) {
-        return this.todoRepository.save(todo);
-    }
-
-    public Iterable<Todo> findAll() {
-        return this.todoRepository.findAll();
-    }
+    public Todo save(Todo todo);
+    public Iterable<Todo> findAll();
 }
