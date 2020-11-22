@@ -1,41 +1,55 @@
 package com.todo.controllers;
 
+import com.todo.entities.User;
+import com.todo.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.CoreMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
 public class MainControllerTest {
     private MockMvc mockMvc;
 
-    @Autowired
+    @InjectMocks
     MainController sut;
+
+    @Mock
+    UserService userService;
 
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     public void getAllUsersTest() throws Exception {
-        // when
-        MvcResult result = mockMvc.perform(get("/demo/all"))
-                .andExpect(status().isOk())
-//                .andExpect(content().string("[{\"id\":1,\"name\":\"myname\",\"email\":\"abc@example.com\"},{\"id\":2,\"name\":\"myname2\",\"email\":\"abcd@example.com\"},{\"id\":3,\"name\":\"myname3\",\"email\":\"mail@example.com\"},{\"id\":4,\"name\":\"myname3\",\"email\":\"mail@example.com\"},{\"id\":5,\"name\":\"myname3\",\"email\":\"mail@example.com\"}]"))
-                .andExpect(content().string("[]"))
-                .andReturn();
+        User userA = new User("userA", "user-a@examle.com");
+        User userB = new User("userB", "user-b@examle.com");
+        User resultOfFindAll[] = {userA, userB};
+        when(userService.findAll()).thenReturn(Arrays.asList(resultOfFindAll));
+
+        // test実施
+        var actual =  sut.getAllUsers();
+
+        int i = 0;
+        for (User u : actual) {
+            assertThat("id", u.getId(), is(resultOfFindAll[i].getId()));
+            assertThat("name", u.getName(), is(resultOfFindAll[i].getName()));
+            assertThat("email", u.getEmail(), is(resultOfFindAll[i].getEmail()));
+            i++;
+        }
     }
 }
