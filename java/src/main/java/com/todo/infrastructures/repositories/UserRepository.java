@@ -1,4 +1,4 @@
-package com.todo.infrastructures;
+package com.todo.infrastructures.repositories;
 
 import com.todo.entities.User;
 import org.springframework.data.repository.CrudRepository;

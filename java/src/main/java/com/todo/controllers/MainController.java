@@ -1,29 +1,28 @@
 package com.todo.controllers;
 
 import com.todo.entities.User;
-import com.todo.infrastructures.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import com.todo.services.UserService;
 
 @Controller
-@RequestMapping(path="/demo")
+@RequestMapping(path = "/demo")
 public class MainController {
-    @Autowired
-    private UserRepository userRepository;
+      @Autowired
+      private UserService userService;
 
-    @PostMapping(path="/add")
-    public @ResponseBody String addNewUser (
-            @RequestParam String name
-            , @RequestParam String email) {
+    @PostMapping(path = "/add")
+    public @ResponseBody User addNewUser(
+            @RequestParam String name, @RequestParam String email) {
 
         User user = new User(name, email);
-        userRepository.save(user);
-        return "Saved";
+        return userService.save(user);
     }
 
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+    @GetMapping(path = "/all")
+    public @ResponseBody
+    Iterable<User> getAllUsers() {
+        return this.userService.findAll();
     }
 }
