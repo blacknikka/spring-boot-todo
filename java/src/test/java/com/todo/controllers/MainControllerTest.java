@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
@@ -32,6 +34,7 @@ public class MainControllerTest {
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(sut).build();
     }
 
     @Test
@@ -40,6 +43,10 @@ public class MainControllerTest {
         User userB = new User("userB", "user-b@examle.com");
         User resultOfFindAll[] = {userA, userB};
         when(userService.findAll()).thenReturn(Arrays.asList(resultOfFindAll));
+
+//        MvcResult actual = mockMvc.perform(get("/demo/all"))
+//                .andExpect(status().isOk())
+//                .andReturn();
 
         // test実施
         var actual =  sut.getAllUsers();
