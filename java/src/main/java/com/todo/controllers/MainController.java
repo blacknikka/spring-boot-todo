@@ -17,10 +17,8 @@ public class MainController {
             @RequestParam String name
             , @RequestParam String email) {
 
-        User n = new User();
-        n.setName(name);
-        n.setEmail(email);
-        userRepository.save(n);
+        User user = new User(name, email);
+        userRepository.save(user);
         return "Saved";
     }
 
